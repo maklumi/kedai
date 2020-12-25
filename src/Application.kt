@@ -1,5 +1,6 @@
 package com.belajar
 
+import com.belajar.ui.books.bukubuku
 import com.belajar.ui.login.Sesi
 import com.belajar.ui.login.loginView
 import io.ktor.application.*
@@ -12,7 +13,6 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.sessions.*
-import kotlinx.coroutines.runBlocking
 import org.slf4j.event.Level
 import kotlin.collections.set
 
@@ -61,26 +61,10 @@ fun Application.module() {
     }
 
     install(Locations) {
-
-    }
-
-//    val client = HttpClient(Apache) {
-//        install(JsonFeature) {
-//            serializer = GsonSerializer()
-//        }
-//    }
-    runBlocking {
-        // Sample for making a HTTP Client request
-        /*
-        val message = client.post<JsonSampleClass> {
-            url("http://127.0.0.1:8080/path/to/endpoint")
-            contentType(ContentType.Application.Json)
-            body = JsonSampleClass(hello = "world")
-        }
-        */
     }
 
     routing {
+        bukubuku()
         bukuan()
         loginView()
 

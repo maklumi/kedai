@@ -6,7 +6,7 @@ import com.mongodb.MongoClientSettings
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
-import com.mongodb.client.model.Filters.eq
+import com.mongodb.client.model.Filters.*
 import org.bson.Document
 import org.bson.codecs.configuration.CodecRegistries.fromProviders
 import org.bson.codecs.configuration.CodecRegistries.fromRegistries
@@ -14,7 +14,8 @@ import org.bson.codecs.configuration.CodecRegistry
 import org.bson.codecs.pojo.PojoCodecProvider
 import org.slf4j.LoggerFactory
 
-class DataManagerMongo {
+enum class DataManagerMongo {
+    INSTANCE;
 
     private val log = LoggerFactory.getLogger(DataManagerMongo::class.java)
 
@@ -75,6 +76,18 @@ class DataManagerMongo {
             .sort(Document(mapOf(Pair(sisih, susunatur), Pair("_id", -1))))
             .skip(helaian - 1)
             .limit(saizmuka)
+            .toList()
+    }
+
+    fun cariBukubuku(str: String): List<Buku> {
+        return koleksiBuku
+            .find(
+                or(
+                    regex("tajuk", ".*$str.*"),
+                    regex("harga", ".*$str.*")
+                )
+            )
+            .sort(Document(mapOf(Pair("tajuk", 1), Pair("_id", -1))))
             .toList()
     }
 }

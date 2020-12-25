@@ -11,7 +11,7 @@ import io.ktor.routing.*
 data class SenaraiBukuLoc(val sisih: String, val menaik: Boolean)
 
 fun Route.bukuan() {
-    val dataManager = DataManagerMongo()
+    val dataManager = DataManagerMongo.INSTANCE
 
     authenticate("jagaKedaiBuku") {
         get<SenaraiBukuLoc>() {
