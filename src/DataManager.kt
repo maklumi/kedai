@@ -3,7 +3,10 @@ package com.belajar
 import org.slf4j.LoggerFactory
 import kotlin.reflect.full.declaredMemberProperties
 
+@Deprecated("guna yang pakai mongo")
 class DataManager {
+    data class Buku(var id: String, var tajuk: String, var harga: Float)
+
     private val log = LoggerFactory.getLogger(DataManager::class.java)
 
     private var bukuan = ArrayList<Buku>()
@@ -49,7 +52,7 @@ class DataManager {
         return bukuDipadam
     }
 
-    fun semuaBuku() = bukuan
+    private fun semuaBuku() = bukuan
 
     fun susunan(sisih: String, menaik: Boolean): Any {
         val member = Buku::class.declaredMemberProperties.find { it.name == sisih }
