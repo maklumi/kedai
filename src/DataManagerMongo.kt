@@ -1,5 +1,7 @@
 package com.belajar
 
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.LoggerContext
 import com.mongodb.MongoClientSettings
 import com.mongodb.client.MongoClients
 import com.mongodb.client.MongoCollection
@@ -20,6 +22,7 @@ class DataManagerMongo {
     private val koleksiBuku: MongoCollection<Buku>
 
     init {
+        (LoggerFactory.getILoggerFactory() as LoggerContext).getLogger("org.mongodb.driver").level = Level.ERROR
         val pojoCodecRegistry: CodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build())
 
         val codecRegistry: CodecRegistry =
