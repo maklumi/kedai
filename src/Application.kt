@@ -44,10 +44,19 @@ fun Application.module(testing: Boolean = false) {
         maxRangeCount = 10
     }
 
+    val penggunaList = listOf("user1", "user2")
+    val admins = listOf("admin1", "admin2")
+
     install(Authentication) {
-        basic("myBasicAuth") {
-            realm = "Ktor Server"
-            validate { if (it.name == "test" && it.password == "password") UserIdPrincipal(it.name) else null }
+        basic("jagaKedaiBuku") {
+            realm = "Kedai Buku"
+            validate {
+                if ((penggunaList.contains(it.name) || admins.contains(it.name)) &&
+                    it.password == "password"
+                )
+                    UserIdPrincipal(it.name)
+                else null
+            }
         }
     }
 
@@ -57,7 +66,7 @@ fun Application.module(testing: Boolean = false) {
         }
     }
 
-    install(Locations){
+    install(Locations) {
 
     }
 
@@ -84,44 +93,6 @@ fun Application.module(testing: Boolean = false) {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         }
 
-        get("/html-dsl") {
-            call.respondHtml {
-                body {
-                    h1 { +"HTML" }
-                    ul {
-                        for (n in 1..10) {
-                            li { +"$n" }
-                        }
-                    }
-                }
-            }
-        }
-
-        get("/styles.css") {
-            call.respondCss {
-                body {
-                    backgroundColor = Color.red
-                }
-                p {
-                    fontSize = 2.em
-                }
-                rule("p.myclass") {
-                    color = Color.blue
-                }
-            }
-        }
-
-        // Static feature. Try to access `/static/ktor_logo.svg`
-        static("/static") {
-            resources("static")
-        }
-
-        get("/session/increment") {
-            val session = call.sessions.get<MySession>() ?: MySession()
-            call.sessions.set(session.copy(count = session.count + 1))
-            call.respondText("Counter is ${session.count}. Refresh to increment.")
-        }
-
         install(StatusPages) {
             exception<AuthenticationException> { cause ->
                 call.respond(HttpStatusCode.Unauthorized)
@@ -132,16 +103,13 @@ fun Application.module(testing: Boolean = false) {
 
         }
 
-        authenticate("myBasicAuth") {
-            get("/protected/route/basic") {
+        authenticate("jagaKedaiBuku") {
+            get("/api/cubaauth") {
                 val principal = call.principal<UserIdPrincipal>()!!
                 call.respondText("Hello ${principal.name}")
             }
         }
 
-        get("/json/gson") {
-            call.respond(mapOf("hello" to "world"))
-        }
     }
 }
 

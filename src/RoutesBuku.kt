@@ -1,6 +1,7 @@
 package com.belajar
 
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.locations.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -12,8 +13,10 @@ data class SenaraiBukuLoc(val sisih: String, val menaik: Boolean)
 fun Route.bukuan() {
     val dataManager = DataManager()
 
-    get<SenaraiBukuLoc>() {
-        call.respond(dataManager.susunan(it.sisih, it.menaik))
+    authenticate("jagaKedaiBuku") {
+        get<SenaraiBukuLoc>() {
+            call.respond(dataManager.susunan(it.sisih, it.menaik))
+        }
     }
 
     route("/buku") {
