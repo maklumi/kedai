@@ -1,11 +1,11 @@
 package com.belajar
 
 class DataManager {
-    var bukuan = ArrayList<Buku>()
+    private var bukuan = ArrayList<Buku>()
 
     private fun kiraId() = bukuan.size.toString()
 
-    fun init() {
+    init {
         bukuan.add(Buku(kiraId(), "Cara tanam pisang", 100.0f))
         bukuan.add(Buku(kiraId(), "Cara tanam betik", 90.0f))
         bukuan.add(Buku(kiraId(), "Cara tanam nanas", 80.0f))
@@ -14,8 +14,9 @@ class DataManager {
         bukuan.add(Buku(kiraId(), "Cara tanam oren", 60.0f))
     }
 
-    fun tambahBuku(buku: Buku) {
+    fun tambahBuku(buku: Buku): Buku {
         bukuan.add(buku)
+        return buku
     }
 
     fun kemaskiniBuku(buku: Buku): Buku? {
@@ -34,4 +35,14 @@ class DataManager {
         bukuan.remove(bukuDipadam)
         return bukuDipadam
     }
+
+    fun padamBuku(idBuku: String): Buku? {
+        val bukuDipadam = bukuan.find {
+            it.id == idBuku
+        }
+        bukuan.remove(bukuDipadam)
+        return bukuDipadam
+    }
+
+    fun semuaBuku() = bukuan
 }
