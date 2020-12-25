@@ -19,6 +19,7 @@ import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
+import io.ktor.locations.*
 import kotlinx.coroutines.*
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -52,7 +53,12 @@ fun Application.module(testing: Boolean = false) {
 
     install(ContentNegotiation) {
         gson {
+            setPrettyPrinting()
         }
+    }
+
+    install(Locations){
+
     }
 
     val client = HttpClient(Apache) {

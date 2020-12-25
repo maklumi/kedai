@@ -1,12 +1,21 @@
 package com.belajar
 
 import io.ktor.application.*
+import io.ktor.locations.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
+@Location("/buku/list")
+data class SenaraiBukuLoc(val sisih: String, val menaik: Boolean)
+
 fun Route.bukuan() {
     val dataManager = DataManager()
+
+    get<SenaraiBukuLoc>() {
+        call.respond(dataManager.susunan(it.sisih, it.menaik))
+    }
+
     route("/buku") {
         get("/") {
             call.respond(dataManager.semuaBuku())
@@ -27,6 +36,7 @@ fun Route.bukuan() {
         delete("/{id}") {
             val id = call.parameters["id"].toString()
             val bukuDipadam = dataManager.padamBuku(id)
+            if (bukuDipadam == null) call.respondText { "Tiada buku dengan id $id." }
             bukuDipadam?.let { call.respond(bukuDipadam) }
         }
     }

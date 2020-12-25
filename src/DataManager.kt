@@ -1,6 +1,11 @@
 package com.belajar
 
+import org.slf4j.LoggerFactory
+import kotlin.reflect.full.declaredMemberProperties
+
 class DataManager {
+    private val log = LoggerFactory.getLogger(DataManager::class.java)
+
     private var bukuan = ArrayList<Buku>()
 
     private fun kiraId() = bukuan.size.toString()
@@ -45,4 +50,18 @@ class DataManager {
     }
 
     fun semuaBuku() = bukuan
+
+    fun susunan(sisih: String, menaik: Boolean): Any {
+        val member = Buku::class.declaredMemberProperties.find { it.name == sisih }
+        if (member == null) {
+            log.info("Field untuk sisihan tak ada.")
+            return semuaBuku()
+        }
+
+        return if (menaik) {
+            semuaBuku().sortedBy { member.get(it).toString() }
+        } else {
+            semuaBuku().sortedByDescending { member.get(it).toString() }
+        }
+    }
 }
