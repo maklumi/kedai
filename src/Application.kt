@@ -1,6 +1,7 @@
 package com.belajar
 
 import com.belajar.ui.books.bukubuku
+import com.belajar.ui.cekout.routesUntukResit
 import com.belajar.ui.login.Sesi
 import com.belajar.ui.login.loginView
 import com.belajar.ui.troli.routesUntukTroli
@@ -20,7 +21,6 @@ import kotlin.collections.set
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
-@kotlin.jvm.JvmOverloads
 fun Application.module() {
     install(Sessions) {
         cookie<Sesi>(Konstant.NAMA_COOKIE.value) {
@@ -69,6 +69,7 @@ fun Application.module() {
         bukuan()
         loginView()
         routesUntukTroli()
+        routesUntukResit()
 
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
