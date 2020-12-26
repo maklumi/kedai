@@ -1,5 +1,6 @@
 package com.belajar.ui
 
+import com.belajar.DataManagerMongo
 import com.belajar.ui.login.Sesi
 import io.ktor.html.*
 import kotlinx.html.*
@@ -25,6 +26,16 @@ class NavigationTemplate(val sesi: Sesi?) : Template<FlowContent> {
                         each(menuitems) {
                             li {
                                 insert(it)
+                            }
+                        }
+                    }
+                }
+                div(classes = "") {
+                    if (sesi != null) {
+                        val troli = DataManagerMongo.INSTANCE.troliPembeli(sesi)
+                        form(action = Endpoints.CART.url) {
+                            button(classes = "btn btn-danger", type = ButtonType.submit) {
+                                +"Barangan dalam troli: ${troli.kuantitiTotal}, Harga semua: ${troli.jumlah}"
                             }
                         }
                     }

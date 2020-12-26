@@ -3,6 +3,7 @@ package com.belajar
 import com.belajar.ui.books.bukubuku
 import com.belajar.ui.login.Sesi
 import com.belajar.ui.login.loginView
+import com.belajar.ui.troli.routesUntukTroli
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.features.*
@@ -67,6 +68,7 @@ fun Application.module() {
         bukubuku()
         bukuan()
         loginView()
+        routesUntukTroli()
 
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
